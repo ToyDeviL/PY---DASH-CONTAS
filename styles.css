@@ -1,0 +1,13 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #1a202c;
+    color: #cbd5e0;
+}
+
+a {
+    color: #805ad5;
+}
+
+a:hover {
+    color: #d6bcfa;
+}
