@@ -12,7 +12,7 @@
         <!-- Sidebar -->
         <div class="w-64 bg-gray-800 p-4">
             <div class="text-lg font-semibold mb-6">
-                Seja Bem vindo Andrino
+                Seja Bem vindo {{ session.get('username', 'Guest') }}
             </div>
             <nav class="space-y-4">
                 <a class="flex items-center space-x-2 text-purple-500" href="#">

@@ -2,7 +2,6 @@ from app import db
 from sqlalchemy import Table, Column, Integer, String, Float, Date, ForeignKey
 from sqlalchemy.orm import relationship
 
-# Define the User model with extend_existing=True
 class User(db.Model):
     __table__ = Table(
         'user',

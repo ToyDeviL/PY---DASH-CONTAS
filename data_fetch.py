@@ -1,6 +1,5 @@
 from app import db
 from models import User, Expense, Earning, Goal, Transaction
-from flask import session
 
 def get_user_data(username):
     user = User.query.filter_by(username=username).first()
