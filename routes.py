@@ -149,3 +149,130 @@ def add_expense():
         # Also add to transactions
         transaction = Transaction(
             user_id=session['user
+@app.route('/add-expense', methods=['GET', 'POST'])
+def add_expense():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    if request.method == 'POST':
+        description = request.form['description']
+        amount = float(request.form['amount'])
+        expense_date = datetime.strptime(request.form['date'], '%Y-%m-%d').date()
+        category = request.form['category']
+        
+        # Create new expense record
+        expense = Expense(
+            user_id=session['user_id'],
+            description=description,
+            amount=amount,
+            date=expense_date,
+            category=category
+        )
+        
+        # Also add to transactions (negative amount for expenses)
+        transaction = Transaction(
+            user_id=session['user_id'],
+            description=description,
+            amount=-amount,  # Negative amount for expenses
+            date=expense_date,
+            category=category
+        )
+        
+        db.session.add(expense)
+        db.session.add(transaction)
+        db.session.commit()
+        
+        flash('Expense added successfully')
+        return redirect(url_for('index'))
+        
+    return render_template('add_expense.html')
+
+# Add earning route
+@app.route('/add-earning', methods=['GET', 'POST'])
+def add_earning():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    if request.method == 'POST':
+        description = request.form['description']
+        amount = float(request.form['amount'])
+        earning_date = datetime.strptime(request.form['date'], '%Y-%m-%d').date()
+        category = request.form['category']
+        
+        # Create new earning record
+        earning = Earning(
+            user_id=session['user_id'],
+            description=description,
+            amount=amount,
+            date=earning_date,
+            category=category
+        )
+        
+        # Also add to transactions (positive amount for earnings)
+        transaction = Transaction(
+            user_id=session['user_id'],
+            description=description,
+            amount=amount,  # Positive amount for earnings
+            date=earning_date,
+            category=category
+        )
+        
+        db.session.add(earning)
+        db.session.add(transaction)
+        db.session.commit()
+        
+        flash('Earning added successfully')
+        return redirect(url_for('index'))
+        
+    return render_template('add_earning.html')
+
+# Add goal route
+@app.route('/add-goal', methods=['GET', 'POST'])
+def add_goal():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    if request.method == 'POST':
+        description = request.form['description']
+        target_amount = float(request.form['target_amount'])
+        current_amount = float(request.form['current_amount'])
+        deadline = datetime.strptime(request.form['deadline'], '%Y-%m-%d').date()
+        
+        # Create new goal
+        goal = Goal(
+            user_id=session['user_id'],
+            description=description,
+            target_amount=target_amount,
+            current_amount=current_amount,
+            deadline=deadline
+        )
+        
+        db.session.add(goal)
+        db.session.commit()
+        
+        flash('Goal added successfully')
+        return redirect(url_for('index'))
+        
+    return render_template('add_goal.html')
+
+# Update goal amount
+@app.route('/update-goal/<int:goal_id>', methods=['POST'])
+def update_goal(goal_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    goal = Goal.query.get_or_404(goal_id)
+    
+    # Check if the goal belongs to the logged-in user
+    if goal.user_id != session['user_id']:
+        flash('Unauthorized access')
+        return redirect(url_for('index'))
+        
+    # Update current amount
+    new_amount = float(request.form['current_amount'])
+    goal.current_amount = new_amount
+    
+    db.session.commit()
+    flash('Goal updated successfully')
+    
+    return redirect(url_for('index'))
