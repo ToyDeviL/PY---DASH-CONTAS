@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Add Goal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-800 p-4">
+            <div class="text-lg font-semibold mb-6">
+                Seja Bem vindo {{ session.get('username', 'Guest') }}
+            </div>
+            <nav class="space-y-4">
+                <a class="flex items-center space-x-2" href="{{ url_for('index') }}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a class="flex items-center space-x-2" href="{{ url_for('add_expense') }}">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Adicionar Despesas</span>
+                </a>
+                <a class="flex items-center space-x-2" href="{{ url_for('add_earning') }}">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Adicionar Ganhos</span>
+                </a>
+                <a class="flex items-center space-x-2 text-purple-500" href="{{ url_for('add_goal') }}">
+                    <i class="fas fa-bullseye"></i>
+                    <span>Adicionar Metas</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a class="flex items-center space-x-2 text-purple-500" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sign out</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-semibold">Adicionar Meta</h1>
+            </div>
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="bg-purple-800 p-4 rounded mb-6">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <div class="bg-gray-800 p-6 rounded-lg">
+                <form action="{{ url_for('add_goal') }}" method="post">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-400 mb-2" for="description">Descrição da Meta</label>
+                            <input class="w-full bg-gray-700 text-white p-2 rounded" id="description" name="description" required type="text">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-2" for="target_amount">Valor Alvo</label>
+                            <input class="w-full bg-gray-700 text-white p-2 rounded" id="target_amount" name="target_amount" required step="0.01" type="number">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-2" for="current_amount">Valor Atual</label>
+                            <input class="w-full bg-gray-700 text-white p-2 rounded" id="current_amount" name="current_amount" required step="0.01" type="number" value="0">
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 mb-2" for="deadline">Data Limite</label>
+                            <input class="w-full bg-gray-700 text-white p-2 rounded" id="deadline" name="deadline" required type="date">
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <button class="w-full bg-purple-600 hover:bg-purple-700 text-white p-2 rounded" type="submit">Adicionar Meta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
