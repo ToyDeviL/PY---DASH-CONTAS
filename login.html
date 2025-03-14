@@ -1,33 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="{{ url_for('static', filename='login.css') }}" rel="stylesheet">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login - Financial Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
 </head>
-<body>
-    <div class="login-container">
-        <h2>Login</h2>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md p-8 bg-gray-800 rounded-lg shadow-lg">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold mb-2">Finanças Pessoais</h1>
+            <p class="text-gray-400">Login para acessar seu dashboard</p>
+        </div>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="bg-red-800 p-4 rounded mb-6">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
         <form action="{{ url_for('login') }}" method="post">
-            <div class="input-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for message in messages %}
-                            <p>{{ message }}</p>
-                        {% endfor %}
+            <div class="mb-6">
+                <label class="block text-gray-400 mb-2" for="username">Username</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fas fa-user text-gray-500"></i>
                     </div>
-                {% endif %}
-            {% endwith %}
+                    <input class="w-full bg-gray-700 text-white p-2 pl-10 rounded" id="username" name="username" required type="text" placeholder="Seu username">
+                </div>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-400 mb-2" for="password">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+                        <i class="fas fa-lock text-gray-500"></i>
+                    </div>
+                    <input class="w-full bg-gray-700 text-white p-2 pl-10 rounded" id="password" name="password" required type="password" placeholder="Sua senha">
+                </div>
+            </div>
+            <div class="mb-6">
+                <button class="w-full bg-purple-600 hover:bg-purple-700 text-white p-2 rounded" type="submit">
+                    Entrar
+                </button>
+            </div>
         </form>
     </div>
 </body>
